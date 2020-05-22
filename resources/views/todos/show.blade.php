@@ -17,6 +17,14 @@ Single Todo: {{ $todo->name}}
                 {{ $todo->description }}
             </div>
         </div>
+        <a href="/todos/{{ $todo->id }}/edit" class="btn btn-info btn-sm my-2 mr-2 float-left">Edit</a>
+        <form action="/todos/{{ $todo->id }}/delete" method="post">
+            @csrf
+            @method('delete')
+            <button type="submit" class="btn btn-danger btn-sm my-2 float-left">
+                Delete
+            </button>
+        </form>
     </div>
 </div>
 @endsection
