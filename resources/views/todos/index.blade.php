@@ -17,7 +17,14 @@ Todos List
                     @foreach($todos as $todo)
                         <li class="list-group-item">
                             {{ $todo->name }}
-                            <a href="/todos/{{ $todo->id }}" class="btn btn-primary btn-sm float-right">
+                            <form action="/delete-todo/{{ $todo->id }}" method="post">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-danger btn-sm float-right">
+                                    Delete
+                                </button>
+                            </form>
+                            <a href="/todos/{{ $todo->id }}" class="btn btn-primary btn-sm float-right mr-1">
                                     View
                             </a>
                         </li>
