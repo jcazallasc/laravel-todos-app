@@ -20,6 +20,14 @@ Todos List
                             <a href="/todos/{{ $todo->id }}" class="btn btn-primary btn-sm float-right mr-1">
                                     View
                             </a>
+                            @if(!$todo->completed)
+                                <form action="/todos/{{ $todo->id }}/complete" method="post" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-warning float-right mr-1">
+                                        Complete
+                                    </button>
+                                </form>
+                            @endif
                         </li>
                     @endforeach
                 </ul>
