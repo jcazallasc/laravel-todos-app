@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Todo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\TodoStoreUpdateRequest;
+
 
 class TodosController extends Controller
 {
@@ -22,22 +26,15 @@ class TodosController extends Controller
         return view('todos.create');
     }
 
-    public function store()
+    public function store(TodoStoreUpdateRequest $request)
     {
-        $this->validate(request(), [
-            'name' => 'required|min:6|max:255',
-            'description' => 'required',
-        ]);
-        $data = request()->all();
-        $todo = new Todo();
-        $todo->name = $data['name'];
-        $todo->description = $data['description'];
-        $todo->completed = false;
-        $todo->save();
+        $data = $request->validated();
 
-        session()->flash('success', 'Todo created successfully');
+        Todo::create($data);
 
-        return redirect('/todos');
+        Session::flash('success', 'Todo created successfully');
+
+        return redirect()->route('todos');
     }
 
     public function edit(Todo $todo)
@@ -45,36 +42,33 @@ class TodosController extends Controller
         return view('todos.edit')->with('todo', $todo);
     }
 
-    public function update(Todo $todo)
+    public function update(TodoStoreUpdateRequest $request, Todo $todo)
     {
-        $this->validate(request(), [
-            'name' => 'required|min:6|max:255',
-            'description' => 'required',
-        ]);
+        $data = $request->validated();
 
-        $data = request()->all();
+        $todo->fill($data)->save();
 
-        $todo->name = $data['name'];
-        $todo->description = $data['description'];
-        $todo->save();
+        Session::flash('success', 'Todo updated successfully');
 
-        session()->flash('success', 'Todo updated successfully');
-
-        return redirect('/todos');
+        return redirect()->route('todos');
     }
 
     public function destroy(Todo $todo)
     {
         $todo->delete();
-        session()->flash('success', 'Todo deleted successfully');
-        return redirect('/todos');
+
+        Session::flash('success', 'Todo deleted successfully');
+
+        return redirect()->route('todos');
     }  
     
     public function markAsCompleted(Todo $todo)
     {
         $todo->completed = true;
         $todo->save();
-        session()->flash('success', 'Todo completed successfully');
-        return redirect('/todos');
+
+        Session::flash('success', 'Todo completed successfully');
+
+        return redirect()->route('todos');
     }   
 }
