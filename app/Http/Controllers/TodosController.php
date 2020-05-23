@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Todo;
 use Illuminate\Support\Facades\Session;
 use App\Repositories\Eloquent\TodoRepository;
-use App\Http\Requests\TodoStoreUpdateRequest;
+use App\Http\Requests\Todo\TodoStoreRequest;
+use App\Http\Requests\Todo\TodoUpdateRequest;
 
 class TodosController extends Controller
 {
@@ -31,7 +32,7 @@ class TodosController extends Controller
         return view('todos.create');
     }
 
-    public function store(TodoStoreUpdateRequest $request)
+    public function store(TodoStoreRequest $request)
     {
         $data = $request->validated();
 
@@ -47,7 +48,7 @@ class TodosController extends Controller
         return view('todos.edit')->with('todo', $this->todoRepository->find($todoId));
     }
 
-    public function update(TodoStoreUpdateRequest $request, $todoId)
+    public function update(TodoUpdateRequest $request, $todoId)
     {
         $data = $request->validated();
 

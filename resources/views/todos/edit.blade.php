@@ -24,11 +24,17 @@ Edit Todos
                 <form action="/todos/{{ $todo->id }}/update-todos" method="POST">
                     @csrf
                     <div class="form-group">
-                    <input type="text" class="form-control" name="name" placeholder="Name" value="{{ $todo->name }}"/>
+                        <input type="text" class="form-control" name="name" placeholder="Name" value="{{ $todo->name }}"/>
                     </div>
                     <div class="form-group">
                         <textarea class="form-control" name="description" placeholder="Description" cols="5" rows="5">{{ $todo->description }}</textarea>
                     </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="completed" {{ $todo->completed ? 'checked':'' }} id="completed">
+                        <label class="form-check-label" for="completed">
+                            Completed
+                        </label>
+                        </div>
                     <div class="form-group text-center">
                         <button type="submit" class="btn btn-success">Update Todo</button>
                     </div>
