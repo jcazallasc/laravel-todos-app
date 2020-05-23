@@ -24,10 +24,10 @@ Create Todos
                 <form action="/store-todos" method="POST">
                     @csrf
                     <div class="form-group">
-                        <input type="text" class="form-control" name="name" placeholder="Name"/>
+                        <input type="text" class="form-control" name="name" placeholder="Name" value="{{ old('name') }}" />
                     </div>
                     <div class="form-group">
-                        <textarea class="form-control" name="description" placeholder="Description" cols="5" rows="5"></textarea>
+                        <textarea class="form-control" name="description" placeholder="Description" cols="5" rows="5">{{ old('description') }}</textarea>
                     </div>
                     <div class="form-group text-center">
                         <button type="submit" class="btn btn-success">Create Todo</button>
