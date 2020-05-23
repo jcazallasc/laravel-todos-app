@@ -17,15 +17,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::get('todos', 'TodosController@index')->name('todos');
-Route::get('todos/{todo}', 'TodosController@show')->name('todo-show');
+Route::get('todos/{todoId}', 'TodosController@show')->name('todo-show');
 
 Route::get('new-todos', 'TodosController@create');
 Route::post('store-todos', 'TodosController@store');
 
-Route::get('todos/{todo}/edit', 'TodosController@edit');
-Route::post('todos/{todo}/update-todos', 'TodosController@update');
+Route::get('todos/{todoId}/edit', 'TodosController@edit');
+Route::post('todos/{todoId}/update-todos', 'TodosController@update');
 
-Route::delete('todos/{todo}/delete', 'TodosController@destroy');
+Route::delete('todos/{todoId}/delete', 'TodosController@destroy');
 
-Route::post('todos/{todo}/complete', 'TodosController@markAsCompleted');
+Route::post('todos/{todoId}/complete', 'TodosController@markAsCompleted');

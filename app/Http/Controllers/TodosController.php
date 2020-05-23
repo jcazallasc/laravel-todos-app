@@ -3,22 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Todo;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Validator;
+use App\Repositories\Eloquent\TodoRepository;
 use App\Http\Requests\TodoStoreUpdateRequest;
-
 
 class TodosController extends Controller
 {
+    private $todoRepository;
+
+    public function __construct(TodoRepository $todoRepository)
+    {
+        $this->todoRepository = $todoRepository;
+    }
+
     public function index()
     {
         return view('todos.index')->with('todos', Todo::all());
     }
 
-    public function show(Todo $todo)
+    public function show($todoId)
     {
-        return view('todos.show')->with('todo', $todo);
+        return view('todos.show')->with('todo', $this->todoRepository->find($todoId));
     }
 
     public function create()
@@ -37,15 +42,16 @@ class TodosController extends Controller
         return redirect()->route('todos');
     }
 
-    public function edit(Todo $todo)
+    public function edit($todoId)
     {
-        return view('todos.edit')->with('todo', $todo);
+        return view('todos.edit')->with('todo', $this->todoRepository->find($todoId));
     }
 
-    public function update(TodoStoreUpdateRequest $request, Todo $todo)
+    public function update(TodoStoreUpdateRequest $request, $todoId)
     {
         $data = $request->validated();
 
+        $todo = $this->todoRepository->find($todoId);
         $todo->fill($data)->save();
 
         Session::flash('success', 'Todo updated successfully');
@@ -53,17 +59,18 @@ class TodosController extends Controller
         return redirect()->route('todos');
     }
 
-    public function destroy(Todo $todo)
+    public function destroy($todoId)
     {
-        $todo->delete();
+        $this->todoRepository->find($todoId)->delete();
 
         Session::flash('success', 'Todo deleted successfully');
 
         return redirect()->route('todos');
     }  
     
-    public function markAsCompleted(Todo $todo)
+    public function markAsCompleted($todoId)
     {
+        $todo = $this->todoRepository->find($todoId);
         $todo->completed = true;
         $todo->save();
 
